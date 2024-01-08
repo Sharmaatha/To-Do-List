@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React TodoList</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-image:url('./assets/list.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        #root {
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+<script type="text/babel">
+    const { useState } = React;
+
+    function TodoList() {
+        const [todos, setTodos] = useState([]);
+        const [inputValue, setInputValue] = useState('');
+
+        function handleChange(e) {
+            setInputValue(e.target.value);
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            setTodos([...todos, inputValue]);
+            setInputValue('');
+        }
+
+        function handleDelete(index) {
+            const newTodos = [...todos];
+            newTodos.splice(index, 1);
+            setTodos(newTodos);
+        }
+
+        return (
+            <div>
+                <h1>Todo List</h1>
+                <form onSubmit={handleSubmit}>
+                    <input type='text' value={inputValue} onChange={handleChange} />
+                    <button type="submit">Add Todo</button>
+                </form>
+                <ul>
+                    {todos.map((todo, index) => (
+                        <li key={index}>
+                            {todo}
+                            <button onClick={() => handleDelete(index)}>Delete</button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    }
+
+    ReactDOM.render(<TodoList />, document.getElementById('root'));
+</script>
+
+</body>
+</html>
